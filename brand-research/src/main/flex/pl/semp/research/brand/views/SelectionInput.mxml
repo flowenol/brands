@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="300" height="210" horizontalAlign="center">
+	<fx:Script>
+		
+		<![CDATA[
+			import spark.components.RadioButton;
+			import mx.collections.ArrayCollection;
+			
+			private var _selection:ArrayCollection;
+			
+			[Bindable]
+			public function get selection():ArrayCollection {
+				return this._selection;	
+			}
+			
+			public function set selection(selection:ArrayCollection):void {
+				this._selection = selection;
+				this.radioButtons.removeAllElements();
+				
+				if (_selection && _selection.length > 0) {
+					for each (var radio:String in _selection) {             
+						
+						var radioButton:RadioButton = new RadioButton()
+						radioButton.label = radio;
+						radioButton.group = radioGroup;
+						radioButton.scaleX = 2;
+						radioButton.scaleY = 2;
+						
+						this.radioButtons.addElement(radioButton);
+					}
+				}
+			}
+			
+		]]>
+	
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:RadioButtonGroup id="radioGroup"/>
+	</fx:Declarations>
+	<s:VGroup id="radioButtons"/>
+</s:VGroup>

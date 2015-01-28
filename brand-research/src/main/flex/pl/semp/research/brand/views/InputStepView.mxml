@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:view="pl.semp.research.brand.views"
+		 width="600" height="400" xmlns:views="pl.semp.research.brand.views.*">
+	<fx:Metadata>
+		[Event(name="stepCompleted", type="pl.semp.research.brand.events.StepCompletedEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.events.FlexEvent;
+			import mx.validators.Validator;
+			
+			import pl.semp.research.brand.configuration.InputStep;
+			import pl.semp.research.brand.data.InputData;
+			import pl.semp.research.brand.data.StepData;
+			import pl.semp.research.brand.events.StepCompletedEvent;
+			import pl.semp.research.brand.utils.TextUtils;
+			
+			[Bindable]
+			public var registeredValues:Dictionary;
+			
+			private var _data:InputStep;
+			
+			[Bindable(event="dataChanged")]
+			public function get data():InputStep {
+				return this._data;
+			}
+			
+			public function set data(data:InputStep):void {
+				this._data = data;
+				
+				if (this._data.type && this._data.type == "SELECTION") {
+					currentState = "Selection";
+				} else if (this._data.type && this._data.type == "LIKERT") {
+					currentState = "Likert";
+				} else {
+					currentState = "Simple"
+				}
+				
+				dispatchEvent(new Event("dataChanged"));
+			}
+			
+			protected function nextClickHandler(event:MouseEvent):void
+			{
+				var validationArray:Array = new Array();
+				validationArray.push(simpleInputValidator, simpleInputNumberValidator, selectionInputValidator);
+				var validatorErrorArray:Array = Validator.validateAll(validationArray);
+				
+				// if no validation errors proceed end this step and send step data.
+				if (validatorErrorArray.length == 0) {
+					var stepData:StepData = new StepData();
+					stepData.inputData = new InputData();
+					stepData.inputData.name = data.valueName;
+					
+					if (currentState == "Selection" && selectionInput.radioGroup.selectedValue) {
+						registeredValues[data.valueName] = selectionInput.radioGroup.selectedValue;
+						stepData.inputData.value = selectionInput.radioGroup.selectedValue as String;
+					} else if (currentState == "Likert" && likertInput.radioGroup.selection) {
+						registeredValues[data.valueName] = likertInput.radioGroup.selection.value.toString();
+						stepData.inputData.value = likertInput.radioGroup.selection.value.toString();
+						likertInput.radioGroup.selection.selected = false;
+					} else if (simpleInput.text) {
+						registeredValues[data.valueName] = simpleInput.text;
+						stepData.inputData.value = simpleInput.text;
+						simpleInput.text = null;
+					}
+					
+					dispatchEvent(new StepCompletedEvent(stepData));
+				}
+			}
+			
+			
+			protected function selectionEnterStateHandler(event:FlexEvent):void
+			{
+				selectionInput.selection = this._data.selection;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="Simple"/>
+		<s:State name="Likert"/>
+		<s:State name="Selection" enterState="selectionEnterStateHandler(event)"/>
+	</s:states>
+	<fx:Declarations>
+		<mx:StringValidator id="simpleInputValidator" source="{simpleInput}" property="text" 
+							required="{data.required}"  enabled="{currentState == 'Simple'}"/>
+		<s:NumberValidator id="simpleInputNumberValidator" source="{simpleInput}" property="text"
+						    enabled="{currentState == 'Simple' &amp;&amp; data.numeric == true}"
+							greaterThanMaxError="Podaj wartość mniejszą niż {data.rangeHigh}"
+							lessThanMinError="Podaj wartosć większą niż {data.rangeLow}"
+							maxValue="{data.rangeHigh}" minValue="{data.rangeLow}"/>
+		<mx:StringValidator id="selectionInputValidator" 
+							source="{selectionInput.radioGroup}" 
+							property="selectedValue" 
+							required="{data.required}" enabled="{currentState == 'Selection'}"/>
+	</fx:Declarations>
+	<s:Button id="nextButton" x="473" y="362" label="Przejdź dalej" click="nextClickHandler(event)"
+			  icon="@Embed(source='/assets/arr_right.gif')"/>
+	<s:RichText x="10" y="5" width="580" height="200" textAlign="center"
+				textFlow="{TextConverter.importToFlow(TextUtils.assignRegisteredValues(data.text, registeredValues), TextConverter.TEXT_FIELD_HTML_FORMAT)}"
+				height.Likert="257"
+				height.Simple="257"/>
+	<s:TextInput id="simpleInput" includeIn="Simple" x="115" y="270" scaleX="1.5" scaleY="1.5" width="238" textAlign="center"/>
+	<views:SelectionInput id="selectionInput" includeIn="Selection" x="153" y="175" />
+	<views:LikertInput id="likertInput" includeIn="Likert" x="10" y="270"/>
+</s:Group>

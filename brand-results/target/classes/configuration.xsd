@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://semp.pl/research/brand/configuration" xmlns:tns="http://semp.pl/research/brand/configuration" elementFormDefault="unqualified">
+
+    <complexType name="configuration">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="url" type="string"></element>
+    		<element name="dictionary">
+    			<complexType>
+    				<sequence>
+    					<element name="term" type="tns:term" maxOccurs="unbounded" minOccurs="0"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    		<element name="fakeDictionary">
+	    		<complexType>
+	    				<sequence>
+	    					<element name="term" type="tns:term" maxOccurs="unbounded" minOccurs="0"></element>
+	    				</sequence>
+	    		</complexType>
+    		</element>
+    		<element name="steps">
+    			<complexType>
+    				<sequence>
+    					<element name="step" type="tns:configurationStep" maxOccurs="unbounded" minOccurs="1"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <element name="configuration" type="tns:configuration"></element>
+
+    <complexType name="term">
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="term" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="configurationStep">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<choice>
+    			<element name="message" type="tns:messageStep"></element>
+    			<element name="input" type="tns:inputStep"></element>
+    			<element name="dictionary" type="tns:dictionaryStep"></element>
+    		</choice>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="messageStep">
+		<sequence>
+			<element name="messages">
+    			<complexType>
+    				<sequence>
+    					<element name="text" type="string" maxOccurs="unbounded"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+		</sequence>
+    </complexType>
+
+
+    <complexType name="inputStep">
+		<sequence>
+			<element name="text" type="string"></element>
+			<element name="type" minOccurs="1">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="LIKERT"></enumeration>
+						<enumeration value="SIMPLE"></enumeration>
+						<enumeration value="SELECTION"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="selection" minOccurs="0">
+    			<complexType>
+    				<sequence>
+    					<element name="value" type="string" maxOccurs="unbounded"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+			<element name="valueName" type="string"></element>
+			<element name="required" type="boolean"></element>
+			<element name="numeric" type="boolean" minOccurs="0"></element>
+			<element name="rangeLow" type="int" minOccurs="0"></element>
+			<element name="rangeHigh" type="int" minOccurs="0"></element>
+		</sequence>
+    </complexType>
+
+    <complexType name="dictionaryStep">
+		<sequence>
+			<element name="text" type="string" minOccurs="0"></element>
+			<element name="includeFakeDictionary"
+				type="boolean">
+			</element>
+			<element name="measureTime" type="boolean"></element>
+			<element name="type" minOccurs="1">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="LIKERT"></enumeration>
+						<enumeration value="SIMPLE"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+    </complexType>
+</schema>

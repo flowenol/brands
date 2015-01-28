@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  creationComplete="creationCompleteHandler(event)"
+		  width="580" height="80" gap="100" horizontalAlign="center" verticalAlign="middle">
+	<fx:Script>
+		
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import pl.semp.research.brand.events.DictionaryStepCompletedEvent;
+			
+			private static const YES_KEY:int = 68;
+			
+			private static const NO_KEY:int = 76;
+			
+			[Bindable]
+			public var decision:Boolean;
+			
+			public function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.addEventListener(KeyboardEvent.KEY_DOWN, keyPressedHandler);
+				this.addEventListener(KeyboardEvent.KEY_UP, keyPressedHandler);
+			}
+			
+			private function keyPressedHandler(e:KeyboardEvent):void {
+				switch(e.keyCode)
+				{
+					case YES_KEY:
+					{
+						if (e.type == KeyboardEvent.KEY_DOWN) {
+							yesButton.setStyle("color", "0x00FF00");
+							decision = true;
+							dispatchEvent(new DictionaryStepCompletedEvent());
+						} else {
+							yesButton.setStyle("color", "");
+						}
+						break;
+					}
+					case NO_KEY:
+					{
+						if (e.type == KeyboardEvent.KEY_DOWN) {
+							noButton.setStyle("color", "0xFF0000");
+							decision = false;
+							dispatchEvent(new DictionaryStepCompletedEvent());
+						} else {
+							noButton.setStyle("color", "");
+						}
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+			
+			protected function buttonClickHandler(event:MouseEvent):void
+			{
+				decision = event.target == yesButton;
+				dispatchEvent(new DictionaryStepCompletedEvent());
+			}
+			
+			protected function buttonMouseDownHandler(event:MouseEvent):void
+			{
+				event.target.setStyle("color", "0xFF0000");				
+			}
+			
+			protected function buttonMouseUpHandler(event:MouseEvent):void
+			{
+				event.target.setStyle("color", "");				
+			}
+			
+		]]>
+		
+	</fx:Script>
+	<fx:Declarations>
+		
+	</fx:Declarations>
+	<s:Button id="yesButton" x="184" y="14" width="212" height="52" label="TAK (D)" click="buttonClickHandler(event)"
+			  fontFamily="Verdana" fontSize="28" icon="@Embed(source='/assets/thumb_up.png')" mouseDown="buttonMouseDownHandler(event)" mouseUp="buttonMouseUpHandler(event)"/>
+	<s:Button id="noButton" width="212" height="52" label="NIE (L)" fontFamily="Verdana" fontSize="28" click="buttonClickHandler(event)"
+			  icon="@Embed(source='/assets/thumb_down.png')" mouseDown="buttonMouseDownHandler(event)" mouseUp="buttonMouseUpHandler(event)"/>
+	
+	
+</s:HGroup>

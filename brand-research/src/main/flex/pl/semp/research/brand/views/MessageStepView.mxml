@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="400">
+	<fx:Metadata>
+		[Event(name="stepCompleted", type="pl.semp.research.brand.events.StepCompletedEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import pl.semp.research.brand.configuration.MessageStep;
+			import pl.semp.research.brand.events.StepCompletedEvent;
+			import pl.semp.research.brand.utils.TextUtils;
+			
+			[Bindable]
+			public var registeredValues:Dictionary;
+			
+			private var _data:MessageStep;
+			
+			private var _textNumber:int;
+			
+			private var _currentTextNumber:int;
+			
+			[Bindable(event="dataChanged")]
+			public function get data():MessageStep {
+				return _data;	
+			}
+			
+			public function set data(data:MessageStep):void {
+				this._data = data;
+				this._textNumber = (_data.messages) ? _data.messages.length : 0;
+				this._currentTextNumber = 0;
+				
+				if (_textNumber > 0) { 
+					trace("Message : displaying text 0");
+					this.textArea.textFlow = TextConverter.importToFlow(TextUtils.assignRegisteredValues(_data.messages.getItemAt(0) as String, registeredValues), TextConverter.TEXT_FIELD_HTML_FORMAT);
+				}
+				
+				dispatchEvent(new Event("textChanged"));
+			}
+			
+			
+			
+			protected function nextClickHandler(event:MouseEvent):void
+			{
+				_currentTextNumber += 1;
+				if (_currentTextNumber <= _textNumber - 1) {
+					trace("Message: displaying text " + _currentTextNumber);
+					this.textArea.textFlow = TextConverter.importToFlow(TextUtils.assignRegisteredValues(data.messages.getItemAt(_currentTextNumber) as String, registeredValues), 
+						TextConverter.TEXT_FIELD_HTML_FORMAT);
+				} else {
+					dispatchEvent(new StepCompletedEvent());
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:RichText id="textArea" x="10" y="22" width="580" height="332" textAlign="center"/>
+	<s:Button x="473" y="362" label="Przejdź dalej" click="nextClickHandler(event)"
+			  icon="@Embed(source='/assets/arr_right.gif')"/>
+</s:Group>

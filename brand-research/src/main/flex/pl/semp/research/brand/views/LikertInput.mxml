@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="580" height="80" gap="5" horizontalAlign="center" verticalAlign="middle">
+	<fx:Script>
+		
+		<![CDATA[
+			import pl.semp.research.brand.events.DictionaryStepCompletedEvent;
+			protected function radioButtonClickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new DictionaryStepCompletedEvent());
+			}
+		]]>
+		
+	</fx:Script>
+	<fx:Declarations>
+		<s:RadioButtonGroup id="radioGroup"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">
+		<s:RadioButton groupName="radioGroup" value="Zdecydowanie nie pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Zdecydowanie nie pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">
+		<s:RadioButton groupName="radioGroup" value="Nie pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Nie pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">
+		<s:RadioButton groupName="radioGroup" value="Raczej nie pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Raczej nie pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">
+		<s:RadioButton groupName="radioGroup" value="Trudno powiedzieć" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Trudno powiedzieć" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">
+		<s:RadioButton groupName="radioGroup" value="Raczej pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Raczej pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">	
+		<s:RadioButton groupName="radioGroup" value="Pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+	<s:VGroup width="80" height="80" horizontalAlign="center" verticalAlign="top">	
+		<s:RadioButton groupName="radioGroup" value="Zdecydowanie pasuje" click="radioButtonClickHandler(event)"/>
+		<s:RichEditableText width="100%" editable="false" multiline="true" lineBreak="toFit" text="Zdecydowanie pasuje" textAlign="center"/>
+	</s:VGroup>
+	
+</s:HGroup>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://semp.pl/research/brand/data" elementFormDefault="unqualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://semp.pl/research/brand/data">
+
+    <complexType name="data">
+    	<sequence>
+    		<element name="name" type="string"/>
+		    <element name="steps" minOccurs="0">
+			    <complexType>
+			    	<sequence>
+			    		<element name="step" type="tns:stepData" minOccurs="0" maxOccurs="unbounded"></element>
+			    	</sequence>
+			    </complexType>
+		    </element>
+    	</sequence>
+    </complexType>
+    
+    <element name="data" type="tns:data"></element>
+
+    <complexType name="stepData">
+    	<sequence>
+    		<element name="name" type="string" minOccurs="0"></element>
+    		<choice>
+    			<element name="inputData" type="tns:inputData"></element>
+    			<element name="dictionaryData" type="tns:dictionaryData"></element>
+    		</choice>
+    	</sequence>
+    </complexType>
+
+    <complexType name="inputData">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="value" type="string"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="dictionaryData">
+    	<sequence>
+		    <element name="terms" minOccurs="0">
+			    <complexType>
+			    	<sequence>
+			    		<element name="term" type="tns:termData" maxOccurs="unbounded"></element>
+			    	</sequence>
+				</complexType>
+		    </element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="termData">
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="value" type="string"></element>
+    		<element name="time" type="double" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+</schema>

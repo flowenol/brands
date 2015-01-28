@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:view="pl.semp.research.brand.views"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:views="pl.semp.research.brand.views.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 width="600" height="400">
+	<fx:Metadata>
+		[Event(name="stepCompleted", type="pl.semp.research.brand.events.StepCompletedEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.Sort;
+			import mx.events.FlexEvent;
+			
+			import pl.semp.research.brand.configuration.DictionaryStep;
+			import pl.semp.research.brand.configuration.Term;
+			import pl.semp.research.brand.data.DictionaryData;
+			import pl.semp.research.brand.data.StepData;
+			import pl.semp.research.brand.data.TermData;
+			import pl.semp.research.brand.events.DictionaryStepCompletedEvent;
+			import pl.semp.research.brand.events.StepCompletedEvent;
+			import pl.semp.research.brand.utils.TextUtils;
+
+			private var _data:DictionaryStep;
+			
+			private var _dictionary:ArrayCollection;
+			
+			private var _fakeDictionary:ArrayCollection;
+			
+			private var _dictionaryElementNumber:int;
+			
+			private var _fakeDictionaryElementNumber:int;
+			
+			private var _currentDictionaryElement:int;
+
+			private var _currentFakeDictionaryElement:int;
+
+			private var _termData:ArrayCollection;
+			
+			private var _currentTerm:Term;
+			
+			private var _currentTime:Number;
+
+			[Bindable]
+			public var registeredValues:Dictionary;
+			
+			[Bindable(event="currentTermChanged")]
+			public function get currentTerm():Term {
+				return this._currentTerm;
+			}
+			
+			[Bindable]
+			public function get dictionary():ArrayCollection {
+				return _dictionary;
+			}
+		
+			public function set dictionary(dictionary:ArrayCollection):void {
+				if (dictionary) {
+					_dictionary = new ArrayCollection();
+					_dictionary.addAll(dictionary);
+					var sort:Sort = new Sort();
+					sort.compareFunction = randomSortFunction;
+					
+					_dictionary.sort = sort;
+					_dictionary.refresh();
+					_dictionary.sort = null;
+					
+					_dictionaryElementNumber = _dictionary.length;
+				} else {
+					_dictionary = null;
+					_dictionaryElementNumber = 0;
+				}
+			}
+			
+			[Bindable]
+			public function get fakeDictionary():ArrayCollection {
+				return _fakeDictionary;
+			}
+			
+			public function set fakeDictionary(fakeDictionary:ArrayCollection):void {
+				if (dictionary) {
+					_fakeDictionary = new ArrayCollection();
+					_fakeDictionary.addAll(fakeDictionary);
+					var sort:Sort = new Sort();
+					sort.compareFunction = randomSortFunction;
+					
+					_fakeDictionary.sort = sort;
+					_fakeDictionary.refresh();
+					_fakeDictionary.sort = null;
+					
+					_fakeDictionaryElementNumber = _fakeDictionary.length;
+				} else {
+					_fakeDictionary = null;
+					_fakeDictionaryElementNumber = 0;
+				}
+			}
+			
+			[Bindable(event="dataChanged")]
+			public function get data():DictionaryStep {
+				return this._data;
+			}
+			
+			public function set data(data:DictionaryStep):void {
+				this._data = data;
+				
+				if (this._data.type && this._data.type == "LIKERT") {
+					currentState = "Likert";
+				} else {
+					currentState = "Simple";
+					
+					// very bad
+					if (simpleDecisionInput) {
+						simpleEnterStateHandler(null);;	
+					}
+				}
+				
+				this._termData = new ArrayCollection();
+				
+				dictionaryStepCompletedHandler(null);
+				
+				dispatchEvent(new Event("dataChanged"));
+			}
+			
+			private function randomSortFunction(a:Object, b:Object, array:Array = null):int
+			{
+				return Math.floor(Math.random() * 3) - 1;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.addEventListener(DictionaryStepCompletedEvent.STEP_COMPLETED, dictionaryStepCompletedHandler);
+			}
+			
+			protected function dictionaryStepCompletedHandler(event:DictionaryStepCompletedEvent):void {
+				if (!event) {
+					this._currentFakeDictionaryElement = 0;
+					this._currentDictionaryElement = 0;
+					
+					if (data.includeFakeDictionary && _fakeDictionaryElementNumber > 0) {
+						_currentTerm = fakeDictionary.getItemAt(0) as Term;
+						dispatchEvent(new Event("currentTermChanged"));
+						
+						this._currentFakeDictionaryElement += 1;
+					} else if (_dictionaryElementNumber > 0) {
+						_currentTerm = dictionary.getItemAt(0) as Term;
+						dispatchEvent(new Event("currentTermChanged"));
+						
+						this._currentDictionaryElement += 1;
+					} else {
+						dispatchEvent(new StepCompletedEvent());
+					}
+					
+				} else {
+					// save the data for current term
+					if ((!data.includeFakeDictionary || _currentFakeDictionaryElement >= _fakeDictionaryElementNumber) && _dictionaryElementNumber > 0) {
+						var termData:TermData = new TermData();
+						this._termData.addItem(termData);
+						termData.id = currentTerm.id;
+						termData.time = (data.measureTime) ? (new Date().time - _currentTime) / 1000 : new Number(false);
+						
+						if (currentState == "Likert") {
+							termData.value = likertInput.radioGroup.selection.value.toString();
+							likertInput.radioGroup.selection.selected = false;
+						} else {
+							termData.value = simpleDecisionInput.decision.toString();
+						}
+					}
+					
+					// proceed with the rest of the steps 
+					if (data.includeFakeDictionary && _currentFakeDictionaryElement < _fakeDictionaryElementNumber) {
+						_currentTerm = fakeDictionary.getItemAt(_currentFakeDictionaryElement) as Term;
+						dispatchEvent(new Event("currentTermChanged"));
+						
+						this._currentFakeDictionaryElement += 1;
+					} else if (_currentDictionaryElement < _dictionaryElementNumber) {
+						_currentTerm = dictionary.getItemAt(_currentDictionaryElement) as Term;
+						dispatchEvent(new Event("currentTermChanged"));
+						
+						this._currentDictionaryElement += 1;
+					} else {
+						// end the step and send step data
+						var stepData:StepData = new StepData();
+						stepData.dictionaryData = new DictionaryData();
+						stepData.dictionaryData.terms = this._termData;
+						
+						dispatchEvent(new StepCompletedEvent(stepData));
+					}
+				}
+				
+				// if time is to be measured
+				if (data.measureTime) {
+					_currentTime = new Date().time;
+				}
+			}
+			
+			protected function simpleEnterStateHandler(event:FlexEvent):void
+			{
+				simpleDecisionInput.setFocus();	
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="Simple" enterState="simpleEnterStateHandler(event)"/>
+		<s:State name="Likert"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:RichText x="10" y="14" width="580" height="160" textAlign="center"
+				textFlow="{TextConverter.importToFlow(TextUtils.assignRegisteredValues(data.text, registeredValues), TextConverter.TEXT_FIELD_HTML_FORMAT)}"/>
+	<s:RichText id="termLabel" text="{currentTerm.term}" textAlign="center"
+			 x="90" y="210" width="420" fontFamily="Verdana"
+			 fontSize="30" fontWeight="bold"/>
+	<views:LikertInput id="likertInput" includeIn="Likert" x="9" y="269"/>
+	<views:SimpleDecisionInput id="simpleDecisionInput" includeIn="Simple" x="9" y="269"/>
+</s:Group>

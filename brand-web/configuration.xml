@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:configuration xmlns:tns="http://semp.pl/research/brand/configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://semp.pl/research/brand/configuration configuration.xsd ">
+  <name>Badanie 1</name>
+  <url>http://localhost:8081</url>
+  <dictionary>
+    <term><id>przymiotnik1</id><term>szczery</term></term>
+    <term><id>przymiotnik2</id><term>przyziemny</term></term>
+    <term><id>przymiotnik3</id><term>uczciwy</term></term>	
+    <term><id>przymiotnik4</id><term>zdrowy</term></term>
+    <term><id>przymiotnik5</id><term>wesoły</term></term>
+    <term><id>przymiotnik6</id><term>ekscytujący</term></term>
+    <term><id>przymiotnik7</id><term>śmiały</term></term>
+    <term><id>przymiotnik8</id><term>porywający</term></term>
+    <term><id>przymiotnik9</id><term>obdarzony wyobraźnią</term></term>
+    <term><id>przymiotnik10</id><term>na czasie</term></term>
+    <term><id>przymiotnik11</id><term>kompetentny</term></term>
+    <term><id>przymiotnik12</id><term>niezawodny</term></term>
+    <term><id>przymiotnik13</id><term>inteligentny</term></term>	
+    <term><id>przymiotnik14</id><term>odnoszący sukcesy</term></term>
+    <term><id>przymiotnik15</id><term>szorstki</term></term>
+    <term><id>przymiotnik16</id><term>outdoorsy???</term></term>
+    <term><id>przymiotnik17</id><term>twardy</term></term>
+    <term><id>przymiotnik18</id><term>wyrafinowany</term></term>
+    <term><id>przymiotnik19</id><term>upper-class???</term></term>
+    <term><id>przymiotnik20</id><term>uroczy</term></term>
+    <term><id>przymiotnik21</id><term>ekstrawertyczny</term></term>
+    <term><id>przymiotnik22</id><term>rozmowny</term></term>
+    <term><id>przymiotnik23</id><term>uprzejmy</term></term>	
+    <term><id>przymiotnik24</id><term>sympatyczny</term></term>
+    <term><id>przymiotnik25</id><term>zorganizowany</term></term>
+    <term><id>przymiotnik26</id><term>schludny</term></term>
+    <term><id>przymiotnik27</id><term>bez emocji????</term></term>
+    <term><id>przymiotnik28</id><term>zrelaksowany</term></term>
+    <term><id>przymiotnik29</id><term>inteligencki???</term></term>
+    <term><id>przymiotnik30</id><term>kreatywny</term></term>
+ </dictionary>
+  <fakeDictionary>
+     <term><id>fake-przymiotnik1</id><term>wyrazisty</term></term>
+     <term><id>fake-przymiotnik2</id><term>nijaki</term></term> 
+     <term><id>fake-przymiotnik3</id><term>popularny</term></term>  
+  </fakeDictionary>
+  <steps>
+  <step>
+    <name>czesc</name>
+    <message>
+      <messages>
+      	<text><![CDATA[ <font size="40" color="0xFF0000">Informacja</font><br/><br/><br/><font size="20"> Wszystkie teksty w tej roboczej wersji badania możemy swobodnie zmieniać.</font>]]></text>
+      	<text><![CDATA[ <font size="40" color="0x00FF00">Witaj!</font><br/><br/><br/><p align="justify"><font size="20">Niniejsze badanie dotyczy marek w kontekście psychologii człowieka. Ma ono charakter niekomercyjny, a zebrane tu dane pozostaną
+       	anonimowe i będą wykorzystywane jedynie do celów naukowych. Zachęcam do poświęcenia około 10 minut na udział w badaniu. Na końcu będzie istniała
+       	możliwość zadania kilku pytań i poznania celu badania.</font></p>
+	   	]]></text>
+	</messages>
+    </message>
+  </step>
+  
+  <step>
+    <name>plec</name>
+    <input>
+      <text><![CDATA[<br/><br/><font size="40">Wskaż swoją płeć.</font><br/>]]></text>
+      <type>SELECTION</type>
+      <selection>
+      	<value>Kobieta</value>
+      	<value>Mężczyzna</value>
+      </selection>
+      <valueName>plec</valueName>
+      <required>true</required>
+    </input>
+  </step>
+  <!--step>
+    <name>plec</name>
+    <input>
+      <text><![CDATA[<br/><br/><font size="40">Wskaż swoją płeć.</font><br/>]]></text>
+      <type>LIKERT</type>
+      <valueName>plecUtozsam</valueName>
+      <required>true</required>
+    </input>
+  </step>
+  <step>
+    <name>plec</name>
+    <input>
+      <text><![CDATA[<br/><br/><font size="40">Wskaż swoją płeć {plecUtozsam}</font><br/>]]></text>
+      <type>LIKERT</type>
+      <valueName>plecUtozsam1</valueName>
+      <required>true</required>
+    </input>
+  </step>
+   <step>
+  	<name>wiek</name>
+   <input>
+      <text><![CDATA[<br/><br/><font size="40">Podaj swój wiek.<br/>]]></text>
+      <type>SIMPLE</type>
+      <valueName>age</valueName>
+      <required>true</required>
+      <numeric>true</numeric>
+      <rangeLow>18</rangeLow>
+      <rangeHigh>80</rangeHigh>
+    </input>
+  </step>
+  <step>
+    <name>wyjasnienie1</name>
+    <message>
+      <messages>
+      <text><![CDATA[<font size="40" color="0x0000FF">Część 1 z 4.</font><br/><br/><br/><p align="justify"><font size="20">Twoim zadaniem w tej części badania będzie określenie,
+       w jakim stopniu każdy z kolejno wyświetlanych przymiotników pasuje do tego, jaką osobą jesteś.</font></p>]]></text>
+      </messages>
+    </message>
+  </step>
+  <step>
+    <name>pierwszy_etap</name>
+    <dictionary>
+      <text><![CDATA[<br/><br/><font size="40">W jakim stopniu ten przymiotnik do Ciebie pasuje?</font><br/>]]></text>
+      <includeFakeDictionary>false</includeFakeDictionary>
+      <measureTime>false</measureTime>
+      <type>LIKERT</type>
+    </dictionary>
+  </step>
+  <step>
+    <name>lovemark</name>
+    <input>
+    <text><![CDATA[<p align="justify"><font size="15"><br/>W otaczającym nas świecie funkcjonuje wiele marek. Każdy z nas ma takie, które lubi, a także takie, które nie wzbudzają jego sympatii.
+     Spośród wszystkich marek niektóre zyskują specjalny status, stają sią nam wyjątkowo bliskie. <br/><br/>Zastanów się, jaka marka ma dla Ciebie taki charakter,
+     jest Ci szczególnie bliska? Zanotuj swój wybór w polu poniżej. Oto kilka inspiracji (jeśli nie znajdziesz pośród nich swojej ulubionej marki, to podaj własną):
+     Red Bull, Apple, Moleskine, Nike, Coca-Cola, Zara, Starbucks, Chanel, Puma, Adidas, Pepsi.</font></p>]]></text>
+    <type>SIMPLE</type>
+    <valueName>lovemark</valueName>
+    <required>true</required>
+    </input>
+  </step>
+  <step>
+    <name>wyjasnienie2</name>
+    <message>
+      <messages>
+      <text><![CDATA[<font size="40" color="0x0000FF">Część 2 z 4.</font><br/><br/><p align="justify"><font size="20">Twoim zadaniem w tej częci badania będzie określenie, w jakim stopniu każdy
+       z kolejno wyświetlanych przymiotników pasują do wybranej przez Ciebie lubianej marki.</font></p>]]></text>
+      </messages>
+    </message>
+  </step>
+  <step>
+    <name>drugi etap</name>
+    <dictionary>
+      <text><![CDATA[<br/><font size="35">W jakim stopniu ten przymiotnik pasuje do wybranej przez Ciebie marki '{lovemark}'?</font><br/>]]></text>
+      <includeFakeDictionary>false</includeFakeDictionary>
+      <measureTime>false</measureTime>
+      <type>LIKERT</type>
+    </dictionary>
+  </step>
+  <step>
+    <name>obojetnamarka</name>
+    <input>
+      <text><![CDATA[<p align="justify"><font size="15"><br/>Pośród wielu marek są też takie, które znamy, a które nie wzbudzają w nas szczególnych emocji - nie fascynują nas,
+       ale również nie wywołują negatywnych skojarzeń.<br/><br/> Wybierz jedną z marek, które znasz, a które są Ci obojętne i zanotuj w polu poniżej. 
+       Oto garść inspiracji:<br/><br/>Napoje (Hoop Cola, Adrenaline energy drink, Carrefour energy drink, Tiger, Black), 
+       towarzystwa ubezpieczeniowe (Allianz, Aviva, Axa, PZU, Warta), banki (AIG Bank Polska, Alior Bank, Bank Ochrony środowiska, Bank BPH,
+        GE Money Bank, Getin Bank, ING Bank Śląski, Bank Millennium, MultiBank, Noble Bank, Pekao S.A., PKO BP).</font></p>]]></text>
+      <type>SIMPLE</type>
+      <valueName>obojetnamarka</valueName>
+      <required>true</required>
+    </input>
+  </step>
+  <step>
+    <name>wyjasnienie3</name>
+    <message>
+    	<messages>
+      		<text><![CDATA[<font size="40" color="0x0000FF">Część 3 z 4.</font><br/><br/><p align="justify"><font size="20">Twoim zadaniem w tej części badania będzie określenie, w jakim stopniu każdy z kolejno wyświetlanych
+      		 przymiotników pasuje do wybranej przez Ciebie marki, która jest Ci obojętna.</font></p>]]></text>
+      	</messages>
+    </message>
+  </step>
+  <step>
+    <name>trzeci_etap</name>
+    <dictionary>
+      <text><![CDATA[<br/><font size="35">W jakim stopniu ten przymiotnik pasuje do wybranej przez Ciebie marki '{obojetnamarka}'?</font><br/>]]></text>
+      <includeFakeDictionary>false</includeFakeDictionary>
+      <measureTime>false</measureTime>
+      <type>LIKERT</type>
+    </dictionary>
+  </step>
+  <step>
+    <name>przerywnik</name>
+    <message>
+      <messages>
+      <text><![CDATA[<br/><br/><br/><br/><br/><font size="40" color="0x0000FF">Obejrzyj następujace obrazy<br/>...</font>]]></text>
+      <text><![CDATA[<img src="http://www.odnowa.rawicz.org.pl/wp-content/uploads/2012/02/pustynia_0352.jpg" width='400' height='300'/>]]></text>
+      <text><![CDATA[<img src="http://static.polskieradio.pl/files/cd3d39d9-dd46-4bfb-b5e3-4df68c377192.file" width='510' height='300'/>]]></text>
+      <text><![CDATA[<img src="http://www.americanprogress.org/wp-content/uploads/issues/2011/10/img/ocean_onpage.jpg" width='510' height='300'/>]]></text>
+      </messages>
+    </message>
+  </step>
+  <step>
+    <name>wyjasnienie_dopasowanie_1</name>
+    <message>
+      <messages>
+      <text><![CDATA[<font size="40" color="0x0000FF">Część 4 z 4.</font><br/><br/><p align="justify"><font size="20"> W tej części badania Twoim zadaniem będzie określenie, czy kolejno wyświetlane przymiotniki do Ciebie pasują.
+       <br/><br/>Naciśnij na klawiaturze klawisz (D), jeśli uznasz, że dany przymiotnik <font color="0x00FF00"><b>PASUJE</b></font> do Ciebie. Naciśnij na klawiaturze klawisz (L), 
+       jeśli uznasz, że dany przymiotnik <font color="0xFF0000"><b>NIE PASUJE</b></font> do Ciebie.</font></p>]]></text>
+       </messages>
+    </message>
+  </step>
+  <step>
+    <name>dopasowanie1</name>
+    <dictionary>
+      <text><![CDATA[<br/><font size="35">Czy ten przymiotnik do Ciebie pasuje?</font><br/>]]></text>
+      <includeFakeDictionary>true</includeFakeDictionary>
+      <measureTime>true</measureTime>
+      <type>SIMPLE</type>
+    </dictionary>
+  </step>
+    <step>
+    <name>wyjasnienie_dopasowanie_2</name>
+    <message>
+      <messages>
+      	<text><![CDATA[<br/><p align="justify"><font size="20"> Teraz Twoim zadaniem będzie określenie, czy kolejno wyświetlane przymiotniki pasują do wybranej przez Ciebie lubianej marki '{lovemark}'. 
+      	 <br/><br/>Naciśnij na klawiaturze klawisz (D), jeśli znasz, że dany przymiotnik <font color="0x00FF00"><b>PASUJE</b></font> do wybranej przez Ciebie lubianej marki.
+      	 <br/>Naciśnij na klawiaturze klawisz (L), jeśli uznasz, że dany przymiotnik <font color="0xFF0000"><b>NIE PASUJE</b></font> do do wybranej przez Ciebie lubianej marki.]]></text>
+      </messages>
+    </message>
+  </step>
+   <step>
+    <name>dopasowanie2</name>
+    <dictionary>
+      <text><![CDATA[<br/><font size="35">Czy ten przymiotnik pasuje do wybranej przez Ciebie marki '{lovemark}'?</font><br/>]]></text>
+      <includeFakeDictionary>true</includeFakeDictionary>
+      <measureTime>true</measureTime>
+      <type>SIMPLE</type>
+    </dictionary>
+  </step>
+  <step>
+    <name>wyjasnienie_dopasowanie_3</name>
+    <message>
+      <messages>
+      	<text><![CDATA[<br/><p align="justify"><font size="20"> Teraz Twoim zadaniem będzie określenie, czy kolejno wyświetlane przymiotniki pasują do wybranej przez Ciebie obojętnej marki '{obojetnamarka}'. 
+      	 <br/><br/>Naciśnij na klawiaturze klawisz (D), jeśli znasz, że dany przymiotnik <font color="0x00FF00"><b>PASUJE</b></font> do wybranej przez Ciebie obojętnej marki.
+      	 <br/>Naciśnij na klawiaturze klawisz (L), jeśli uznasz, że dany przymiotnik <font color="0xFF0000"><b>NIE PASUJE</b></font> do do wybranej przez Ciebie obojętnej marki.]]></text>
+      </messages>
+    </message>
+  </step>
+   <step>
+    <name>dopasowanie3</name>
+    <dictionary>
+      <text><![CDATA[<br/><font size="35">Czy ten przymiotnik pasuje do wybranej przez Ciebie marki '{obojetnamarka}'?</font><br/>]]></text>
+      <includeFakeDictionary>true</includeFakeDictionary>
+      <measureTime>true</measureTime>
+      <type>SIMPLE</type>
+    </dictionary>
+  </step>
+  <step>
+    <name>podziekowanie</name>
+    <message>
+      <messages>
+      <text><![CDATA[<br/><br/><br/><font size="40" color="0x0000FF">Dziękuję za udział w badaniu!</font><br/><br/><br/><br/><p align="justify"><font size="20">Jeśli masz jakieś pytania lub chcesz dowiedzieć się czegoś więcej na temat badania,
+       możesz skontaktować się ze mną pisząc na adres: <b>kb1985@gmail.com</b></font></p>]]></text>
+    </messages>
+    </message>
+  </step-->
+  </steps>   
+</tns:configuration>
